@@ -1,5 +1,6 @@
-import React from 'react';
-import ReactMapGL from "react-map-gl";
+import React, {useState} from "react";
+import ReactMapGL, {Marker, Popup} from "react-map-gl";
+import * as airportData from "./data/Texas_Airports.geojson";
 // import './App.css';
 
 export default function App() {
@@ -10,14 +11,39 @@ export default function App() {
   height: "100vh",
   zoom: 10
  })
+ const [selectedAirport, setSelectedAirport] = useState(null);
   
   return <div>
     <ReactMapGL 
     {...viewport}
     mapBoxApiAccessToken = {process.env.REACT_APP_MAPBOX_TOKEN}
+    mapStyle = "mapbox://styles/mapbox/standard"
     onViewPortChange = {(viewport) => {setViewport(viewport);}}
     >
-      markers here
+
+     {airportData.features.map(airport => (
+          <Marker
+            key={airport.properties.OBJECTID}
+            latitude={airport.geometry.coordinates[1]}
+            longitude={airport.geometry.coordinates[0]}
+          >
+          </Marker>
+        ))}
+
+        {selectedAirport ? (
+          <Popup
+            latitude={selectedAirport.geometry.coordinates[1]}
+            longitude={selectedAirport.geometry.coordinates[0]}
+            onClose={() => {
+              setSelectedAirport(null);
+            }}
+          >
+            <div>
+              <h2>{selectedAirport.properties.ARPRT_NM}</h2>
+              <p>{selectedAirport.properties.CNTY_NBR}</p>
+            </div>
+          </Popup>
+        ) : null}
     </ReactMapGL>
 
   </div>;
