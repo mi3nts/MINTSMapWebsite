@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import ReactMapGL, {Marker, Popup} from "react-map-gl";
-import * as airportData from "./data/Texas_Airports.geojson";
+import airportData from "./data/Texas_Airports.geojson";
+// import * as airportData from "./data/Texas_Airports.geojson";
 // import './App.css';
 
 export default function App() {
